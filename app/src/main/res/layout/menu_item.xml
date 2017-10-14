@@ -17,9 +17,10 @@
         android:id="@+id/menuName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:text="메뉴 이름"
-        android:textSize="30sp"
-        android:layout_marginLeft="10dp"/>
+        android:textColor="@color/colorFirst"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/menuPrice"
@@ -27,5 +28,6 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:text="메뉴 가격"
-        android:textSize="20sp"/>
+        android:textColor="@color/colorThird"
+        android:textSize="20sp" />
 </LinearLayout>

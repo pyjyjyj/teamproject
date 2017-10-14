@@ -19,10 +19,15 @@ class MenuItem {
     int menuIcon;
     String menuName;
     String menuPrice;
-    MenuItem(int menuIcon, String menuName, String menuPrice) {
+    String menuInfo;
+    String menuStar;
+
+    MenuItem(int menuIcon, String menuName, String menuPrice, String menuInfo, String menuStar) {
         this.menuIcon = menuIcon;
         this.menuName = menuName;
         this.menuPrice = menuPrice;
+        this.menuInfo = menuInfo;
+        this.menuStar = menuStar;
     }
 }
 
