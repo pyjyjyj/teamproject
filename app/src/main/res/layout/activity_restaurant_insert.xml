@@ -60,7 +60,7 @@
             android:id="@+id/rEndTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="datetime"
+            android:inputType="time"
             android:hint="종료시간"
             android:layout_weight="1"/>
     </LinearLayout>
