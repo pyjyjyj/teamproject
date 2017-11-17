@@ -6,15 +6,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.jessie.teamproject.MainActivity">
+
     <Button
         android:id="@+id/restaurant_insert"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="맛집 등록하기"/>
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@color/textcolor1"
+        android:padding="20dp"
+        android:text="맛집 등록하기"
+        android:textColor="@android:color/white" />
 
     <ListView
         android:id="@+id/restaurant_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"></ListView>
 
 </LinearLayout>

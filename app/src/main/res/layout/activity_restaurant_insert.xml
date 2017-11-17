@@ -66,7 +66,12 @@
     </LinearLayout>
     <Button
         android:id="@+id/restaurant_insert_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="맛집 등록하기"/>
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@color/colorAccent"
+        android:padding="12dp"
+        android:text="맛집 등록하기"
+        android:textColor="@android:color/white"/>
 </LinearLayout>
