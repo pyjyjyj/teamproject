@@ -8,6 +8,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -67,5 +68,20 @@ public class MenuInsertActivity extends AppCompatActivity {
             } else
                 Toast.makeText(getApplicationContext(), "mPhotoFile is null", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String[] createMenuDataArray() {
+        EditText mName = (EditText) findViewById(R.id.mName);
+        EditText mPrice = (EditText) findViewById(R.id.mPrice);
+        EditText mInfo = (EditText) findViewById(R.id.mInfo);
+        EditText mStar = (EditText) findViewById(R.id.mStar);
+        String restaurant = getIntent().getStringExtra("resName");
+        String name = mName.getText().toString();
+        String price = mPrice.getText().toString()+"원";
+        String info = mInfo.getText().toString();
+        String star = mStar.getText().toString();
+        String imgFileName = mPhotoFileName;
+        String[] dataArray = {restaurant, name, price, info, star, imgFileName};
+        return dataArray;
     }
 }
