@@ -126,8 +126,7 @@ public class RestarurantDetailActivity extends AppCompatActivity {
                     File mPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), mPhotoFileName);
                     Uri uri = Uri.fromFile(mPhotoFile);
                     image.setImageURI(uri);
-                } else
-                    Toast.makeText(getApplicationContext(), "mPhotoFile is null", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
