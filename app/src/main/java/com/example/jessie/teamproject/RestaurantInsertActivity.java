@@ -126,6 +126,7 @@ public class RestaurantInsertActivity extends AppCompatActivity {
         Restaurant_Data = createRestaurantDataArray();
         long nOfRows = mDbHelper.insertRestaurantByMethod(Restaurant_Data[0], Restaurant_Data[1], Restaurant_Data[2], Restaurant_Data[3], Restaurant_Data[4]);
         Intent intent = new Intent(this, RestarurantDetailActivity.class);
+        intent.putExtra("resName", Restaurant_Data[0]);
         startActivity(intent);
         if (nOfRows > 0)
             Toast.makeText(this, nOfRows + " Record Inserted", Toast.LENGTH_SHORT).show();

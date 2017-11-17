@@ -1,23 +1,32 @@
 package com.example.jessie.teamproject;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class RestarurantDetailActivity extends AppCompatActivity {
     static MenuAdapter adapter;
+    DBHelper mDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restarurant_detail);
 
+        mDBHelper = new DBHelper(this);
+
+        getRestaurantData();
 
         ArrayList<MenuItem> data = new ArrayList<MenuItem>();
         data.add(new MenuItem(R.drawable.momil, "냉모밀", "3000", "차가운 국물에 모밀 면이 들어가 있어요", "평점 : 3.4"));
@@ -60,8 +69,30 @@ public class RestarurantDetailActivity extends AppCompatActivity {
     }
 
     public void callButtonClick(View view) {
-        String num = getString(R.string.phone_number);
+        TextView phone_n = (TextView)findViewById(R.id.rdetail_phone);
+        String num = phone_n.getText().toString();
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+num));
         startActivity(intent);
+    }
+
+    private void getRestaurantData(){
+        Cursor cursor = mDBHelper.getAllRestaurantsByMethod();
+
+        while(cursor.moveToNext()) {
+            if (cursor.getString(1).equals(getIntent().getStringExtra("resName"))) {
+                TextView name = (TextView) findViewById(R.id.rdetail_name);
+                name.setText(cursor.getString(1));
+                TextView address = (TextView) findViewById(R.id.rdetail_address);
+                address.setText(cursor.getString(2));
+                TextView phone = (TextView) findViewById(R.id.rdetail_phone);
+                phone.setText(cursor.getString(3));
+                TextView time = (TextView) findViewById(R.id.rdetail_time);
+                time.setText(cursor.getString(4));
+                ImageView image = (ImageView) findViewById(R.id.rdetail_img);
+                File mPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), cursor.getString(5));
+                Uri uri = Uri.fromFile(mPhotoFile);
+                image.setImageURI(uri);
+            }
+        }
     }
 }
