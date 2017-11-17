@@ -43,9 +43,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(RestaurantContract.Restaurants.TABLE_NAME,null,values);
     }
 
-    public long insertMenuByMethod(String name, String price, String info, String star, String imgFileName) {
+    public long insertMenuByMethod(String restaurant, String name, String price, String info, String star, String imgFileName) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(RestaurantContract.Menus.KEY_RESTAURANT, restaurant);
         values.put(RestaurantContract.Menus.KEY_NAME, name);
         values.put(RestaurantContract.Menus.KEY_PRICE, price);
         values.put(RestaurantContract.Menus.KEY_INFO, info);
