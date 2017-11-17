@@ -78,9 +78,12 @@ public class RestarurantDetailActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    final static int REQUEST_MENU_INSERT = 0;
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        startActivity(new Intent(this, MenuInsertActivity.class));
+        Intent intent = new Intent(this, MenuInsertActivity.class);
+        intent.putExtra("resName", getIntent().getStringExtra("resName"));
+        startActivityForResult(intent, REQUEST_MENU_INSERT);
         return true;
     }
 
