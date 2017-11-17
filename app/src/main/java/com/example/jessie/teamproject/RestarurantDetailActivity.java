@@ -71,6 +71,19 @@ public class RestarurantDetailActivity extends AppCompatActivity {
         });
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_MENU_INSERT && resultCode == RESULT_OK) {
+            Cursor c = mDBHelper.getAllMenusByMethod();
+            TextView resName = (TextView) findViewById(R.id.rdetail_name);
+
+            while(c.moveToNext()) {
+                if(c.getString(0).equals(resName.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), c.getString(1), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

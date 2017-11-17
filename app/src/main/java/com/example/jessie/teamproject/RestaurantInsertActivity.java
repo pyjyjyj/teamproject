@@ -51,7 +51,6 @@ public class RestaurantInsertActivity extends AppCompatActivity {
                 insertRestaurant();
             }
         });
-
     }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
