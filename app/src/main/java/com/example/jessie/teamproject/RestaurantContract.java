@@ -33,6 +33,7 @@ public final class RestaurantContract {
 
     public static class Menus implements BaseColumns {
         public static final String TABLE_NAME="Menus";
+        public static final String KEY_RESTAURANT = "Restaurant";
         public static final String KEY_NAME = "Name";
         public static final String KEY_PRICE = "Price";
         public static final String KEY_INFO = "Info";
@@ -41,6 +42,7 @@ public final class RestaurantContract {
 
         public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
+                KEY_RESTAURANT + TEXT_TYPE + COMMA_SEP +
                 KEY_NAME + TEXT_TYPE + COMMA_SEP +
                 KEY_PRICE + TEXT_TYPE + COMMA_SEP +
                 KEY_INFO + TEXT_TYPE +  COMMA_SEP+
