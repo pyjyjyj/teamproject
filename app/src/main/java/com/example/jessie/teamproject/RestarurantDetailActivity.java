@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -104,9 +105,13 @@ public class RestarurantDetailActivity extends AppCompatActivity {
                 TextView time = (TextView) findViewById(R.id.rdetail_time);
                 time.setText(cursor.getString(4));
                 ImageView image = (ImageView) findViewById(R.id.rdetail_img);
-                File mPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), cursor.getString(5));
-                Uri uri = Uri.fromFile(mPhotoFile);
-                image.setImageURI(uri);
+                String mPhotoFileName = cursor.getString(5);
+                if (mPhotoFileName != null) {
+                    File mPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), mPhotoFileName);
+                    Uri uri = Uri.fromFile(mPhotoFile);
+                    image.setImageURI(uri);
+                } else
+                    Toast.makeText(getApplicationContext(), "mPhotoFile is null", Toast.LENGTH_SHORT).show();
             }
         }
     }
