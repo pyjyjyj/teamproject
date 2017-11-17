@@ -31,26 +31,26 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertRestaurantByMethod(String name, String address, String phone, String time, String img) { // img 타입 추후 수정 예정
+    public long insertRestaurantByMethod(String name, String address, String phone, String time, String imgFileName) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(RestaurantContract.Restaurants.KEY_NAME, name);
         values.put(RestaurantContract.Restaurants.KEY_ADDRESS, address);
         values.put(RestaurantContract.Restaurants.KEY_PHONE, phone);
         values.put(RestaurantContract.Restaurants.KEY_TIME, time);
-        values.put(RestaurantContract.Restaurants.KEY_IMAGE, img);
+        values.put(RestaurantContract.Restaurants.KEY_IMAGE, imgFileName);
 
         return db.insert(RestaurantContract.Restaurants.TABLE_NAME,null,values);
     }
 
-    public long insertMenuByMethod(String name, String price, String info, String star, String img) { // img 타입 추후 수정 예정
+    public long insertMenuByMethod(String name, String price, String info, String star, String imgFileName) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(RestaurantContract.Menus.KEY_NAME, name);
         values.put(RestaurantContract.Menus.KEY_PRICE, price);
         values.put(RestaurantContract.Menus.KEY_INFO, info);
         values.put(RestaurantContract.Menus.KEY_STAR, star);
-        values.put(RestaurantContract.Menus.KEY_IMAGE, img);
+        values.put(RestaurantContract.Menus.KEY_IMAGE, imgFileName);
 
         return db.insert(RestaurantContract.Menus.TABLE_NAME,null,values);
     }
