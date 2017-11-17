@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -37,9 +38,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /* 리스트뷰 강의자료에서 참조 */
-        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, restaurants);
+        final ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, restaurants);
 
         ListView restaurant_list = (ListView)findViewById(R.id.restaurant_list);
         restaurant_list.setAdapter(adapt);
+
+        restaurant_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), RestarurantDetailActivity.class);
+                intent.putExtra("resName", adapt.getItem(i).toString());
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -1,6 +1,8 @@
 package com.example.jessie.teamproject;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -16,13 +19,13 @@ import java.util.ArrayList;
  */
 
 class MenuItem {
-    int menuIcon;
+    String menuIcon;
     String menuName;
     String menuPrice;
     String menuInfo;
     String menuStar;
 
-    MenuItem(int menuIcon, String menuName, String menuPrice, String menuInfo, String menuStar) {
+    MenuItem(String menuName, String menuPrice, String menuInfo, String menuStar, String menuIcon) {
         this.menuIcon = menuIcon;
         this.menuName = menuName;
         this.menuPrice = menuPrice;
@@ -65,7 +68,11 @@ public class MenuAdapter extends BaseAdapter {
         }
 
         ImageView icon = (ImageView) convertView.findViewById(R.id.menuIcon);
-        icon.setImageResource(mItems.get(position).menuIcon);
+        if (mItems.get(position).menuIcon != null) {
+            File mPhotoFile = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES), mItems.get(position).menuIcon);
+            Uri uri = Uri.fromFile(mPhotoFile);
+            icon.setImageURI(uri);
+        }
 
         TextView menuName = (TextView) convertView.findViewById(R.id.menuName);
         menuName.setText(mItems.get(position).menuName);

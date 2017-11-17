@@ -1,11 +1,15 @@
 package com.example.jessie.teamproject;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
 
 public class MenuDetail extends AppCompatActivity {
 
@@ -20,14 +24,18 @@ public class MenuDetail extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        int detailImg = intent.getIntExtra("menuIcon", 0);
+        String detailImg = intent.getStringExtra("menuIcon");
         String detailName = intent.getStringExtra("menuName");
         String detailPrice = intent.getStringExtra("menuPrice");
         String detailInfo = intent.getStringExtra("menuInfo");
         String detailStar = intent.getStringExtra("menuStar");
 
         ImageView img = (ImageView) findViewById(R.id.detailImg);
-        img.setImageResource(detailImg);
+        if (detailImg != null) {
+            File mPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), detailImg);
+            Uri uri = Uri.fromFile(mPhotoFile);
+            img.setImageURI(uri);
+        }
 
         TextView name = (TextView) findViewById(R.id.detailName);
         name.setText(detailName);
