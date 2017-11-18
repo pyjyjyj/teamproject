@@ -1,6 +1,7 @@
 package com.example.jessie.teamproject;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
@@ -23,30 +24,13 @@ public class MenuDetail extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Intent intent = getIntent();
-        String detailImg = intent.getStringExtra("menuIcon");
-        String detailName = intent.getStringExtra("menuName");
-        String detailPrice = intent.getStringExtra("menuPrice");
-        String detailInfo = intent.getStringExtra("menuInfo");
-        String detailStar = intent.getStringExtra("menuStar");
-
-        ImageView img = (ImageView) findViewById(R.id.detailImg);
-        if (detailImg != null) {
-            File mPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), detailImg);
-            Uri uri = Uri.fromFile(mPhotoFile);
-            img.setImageURI(uri);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            finish();
+            return;
         }
 
-        TextView name = (TextView) findViewById(R.id.detailName);
-        name.setText(detailName);
-
-        TextView price = (TextView) findViewById(R.id.detailPrice);
-        price.setText(detailPrice);
-
-        TextView info = (TextView) findViewById(R.id.detailInfo);
-        info.setText(detailInfo);
-
-        TextView star = (TextView) findViewById(R.id.detailStar);
-        star.setText(detailStar);
+        MenuFragment MenuFragment = new MenuFragment();
+        MenuFragment.setSelection(getIntent().getIntExtra("index",-1));
+        getSupportFragmentManager().beginTransaction().replace(R.id.menu_detail, MenuFragment).commit();
     }
 }
