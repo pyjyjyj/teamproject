@@ -2,15 +2,9 @@ package com.example.jessie.teamproject;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.io.File;
 
 public class MenuDetail extends AppCompatActivity {
 
@@ -29,8 +23,15 @@ public class MenuDetail extends AppCompatActivity {
             return;
         }
 
+        Intent intent = getIntent();
+        String detailImg = intent.getStringExtra("menuIcon");
+        String detailName = intent.getStringExtra("menuName");
+        String detailPrice = intent.getStringExtra("menuPrice");
+        String detailInfo = intent.getStringExtra("menuInfo");
+        String detailStar = intent.getStringExtra("menuStar");
+
         MenuFragment MenuFragment = new MenuFragment();
-        MenuFragment.setSelection(getIntent().getIntExtra("index",-1));
+        MenuFragment.setSelection(detailImg, detailName, detailPrice, detailInfo, detailStar);
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_detail, MenuFragment).commit();
     }
 }

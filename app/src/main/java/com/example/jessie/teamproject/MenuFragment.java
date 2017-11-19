@@ -1,8 +1,5 @@
 package com.example.jessie.teamproject;
 
-
-import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,39 +14,33 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MenuFragment extends Fragment {
-    MenuAdapter adapter;
-    ListView listView;
-    ArrayList<MenuItem> data;
-    DBHelper mDBHelper;
-
-    static int index=-1;
+    static String detailImg = "";
+    static String detailName = "";
+    static String detailPrice = "";
+    static String detailInfo = "";
+    static String detailStar = "";
 
     public MenuFragment() {
         // Required empty public constructor
     }
 
-    public void setSelection(int i){
-        index = i;
+    public void setSelection(String img, String name, String price, String info, String star){
+        detailImg = img;
+        detailName = name;
+        detailPrice = price;
+        detailInfo = info;
+        detailStar = star;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
-
-        Intent intent = getActivity().getIntent();
-        String detailImg = intent.getStringExtra("menuIcon");
-        String detailName = intent.getStringExtra("menuName");
-        String detailPrice = intent.getStringExtra("menuPrice");
-        String detailInfo = intent.getStringExtra("menuInfo");
-        String detailStar = intent.getStringExtra("menuStar");
 
         ImageView img = (ImageView) view.findViewById(R.id.detailImg);
         if (detailImg != null) {
@@ -72,5 +63,4 @@ public class MenuFragment extends Fragment {
 
         return view;
     }
-
 }
