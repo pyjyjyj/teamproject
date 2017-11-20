@@ -2,6 +2,7 @@ package com.example.jessie.teamproject;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,5 +34,13 @@ public class MenuDetail extends AppCompatActivity {
         MenuFragment MenuFragment = new MenuFragment();
         MenuFragment.setSelection(detailImg, detailName, detailPrice, detailInfo, detailStar);
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_detail, MenuFragment).commit();
+    }
+
+    @Nullable
+    @Override
+    public Intent getSupportParentActivityIntent() { //http://blog.daum.net/creazier/15310385
+        Intent intent = new Intent(this, RestarurantDetailActivity.class);
+        intent.putExtra("resName", getIntent().getStringExtra("resName"));
+        return intent;
     }
 }

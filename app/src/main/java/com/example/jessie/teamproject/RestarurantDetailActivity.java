@@ -34,6 +34,7 @@ public class RestarurantDetailActivity extends AppCompatActivity implements Rest
             intent.putExtra("menuPrice", menuPrice);
             intent.putExtra("menuInfo", menuInfo);
             intent.putExtra("menuStar", menuStar);
+            intent.putExtra("resName", getIntent().getStringExtra("resName"));
             startActivity(intent);
         }
     }
