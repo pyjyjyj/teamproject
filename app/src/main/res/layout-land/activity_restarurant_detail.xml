@@ -4,7 +4,7 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <fragment
-        android:id="@+id/resFrag2"
+        android:id="@+id/resFrag"
         android:name="com.example.jessie.teamproject.RestaurantFragment"
         android:layout_weight="1"
         android:layout_width="0px"
