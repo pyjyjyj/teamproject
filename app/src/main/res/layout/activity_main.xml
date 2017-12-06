@@ -7,6 +7,13 @@
     android:orientation="vertical"
     tools:context="com.example.jessie.teamproject.MainActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id = "@+id/ani"
+        android:layout_gravity="top|center"
+        android:src="@drawable/dinner"/>
+
     <Button
         android:id="@+id/restaurant_insert"
         android:layout_width="match_parent"
