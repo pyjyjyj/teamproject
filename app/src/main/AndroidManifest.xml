@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jessie.teamproject">
-    <!--퍼미션과 프로바이더 출처 : https://kwanulee.github.io/Android/multimedia/multimedia.html-->
+
+    <!-- 퍼미션과 프로바이더 출처 : https://kwanulee.github.io/Android/multimedia/multimedia.html -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DIAL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -24,17 +26,23 @@
         <activity
             android:name=".MenuDetail"
             android:parentActivityName=".RestarurantDetailActivity" />
-        <activity android:name=".RestaurantInsertActivity"></activity>
-        <activity android:name=".MenuInsertActivity"></activity>
+        <activity android:name=".RestaurantInsertActivity" />
+        <activity android:name=".MenuInsertActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.jessie.teamproject"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".RestaurantMapActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAzxF_J3R4-ryKq7iSayNU_N7V-rLU5Qqc" />
     </application>
 
 </manifest>
