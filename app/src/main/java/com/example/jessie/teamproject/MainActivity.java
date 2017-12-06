@@ -2,6 +2,7 @@ package com.example.jessie.teamproject;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -59,6 +60,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
         startTwinAnimation();
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable(){
+            public void run(){
+                Intent intent = new Intent(MainActivity.this, RestaurantMapActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        },2200);
+        //Handler 참조 블로그 : http://grayd.tistory.com/11
     }
 
     private void startTwinAnimation(){

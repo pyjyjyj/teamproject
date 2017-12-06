@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id = "@+id/ani"
+        android:id ="@+id/ani"
         android:layout_gravity="top|center"
         android:src="@drawable/dinner"/>
 
