@@ -6,13 +6,17 @@
         android:title="location"
         android:icon="@drawable/ic_my_location_black_24dp"
         app:showAsAction="ifRoom"/>
+    <group android:id="@+id/distance"
+        android:checkableBehavior="single">
     <item
         android:id="@+id/distance1"
-        android:title="1km"/>
+        android:title="1km"
+        android:checked="true"/>
     <item
         android:id="@+id/distance2"
         android:title="2km"/>
     <item
         android:id="@+id/distance3"
         android:title="3km"/>
+    </group>
 </menu>

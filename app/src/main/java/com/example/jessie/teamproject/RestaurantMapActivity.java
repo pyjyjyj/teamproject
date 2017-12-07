@@ -1,5 +1,6 @@
 package com.example.jessie.teamproject;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.*;
@@ -26,10 +27,13 @@ public class RestaurantMapActivity extends AppCompatActivity {
             case R.id.location:
                 return true;
             case R.id.distance1:
+                item.setChecked(true);
                 return true;
             case R.id.distance2:
+                item.setChecked(true);
                 return true;
             case R.id.distance3:
+                item.setChecked(true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
