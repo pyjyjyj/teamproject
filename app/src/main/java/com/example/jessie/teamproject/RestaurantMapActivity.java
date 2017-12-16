@@ -9,7 +9,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +37,8 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
     private GoogleMap mGoogleMap = null;
+    private int distanceSelect = 1000;
+    private float zoomLevel = 14;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,10 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 //        insertRestaurant("할매순대국한성대역점", "대한민국 서울특별시 성북구 삼선동1가 13-4", "02-742-2655", "00:00~23:59", null);
 //        insertRestaurant("박효신꼬지비어", "대한민국 서울특별시 성북구 삼선동2가 44-1", "02-742-4226", "18:00~04:00", null);
 //        insertRestaurant("안즈나 선아 당신 생각", "대한민국 서울특별시 성북구 동소문동1가 111-2", "02-6465-3945", "10:00~23:00",null);
+//        mDbHelper.insertRestaurantByMethod("소문난국수집", "서울특별시 성북구 성북동 58-26", "02-3672-6685", "10:00~22:00", null);
+//        mDbHelper.insertRestaurantByMethod("왕코등갈비", "서울특별시 종로구 종로1.2.3.4가동 돈화문로 49", "02-766-4492", "17:00~23:30", null);
+//        mDbHelper.insertRestaurantByMethod("삼숙이라면", "서울특별시 종로구 인사동 220-2", "02-720-9711", "08:30~21:30", null);
+//        mDbHelper.insertRestaurantByMethod("오소리순대", "서울특별시 동대문구 제기동 1148-10", "02-918-9797", "10:30~22:00", null);
     }
 
     private boolean checkLocationPermissions() {
@@ -96,8 +101,9 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
                     mLastLocation = location;
+                    mLastLocation.setLatitude(37.581759);mLastLocation.setLongitude(127.010369);//현재 위치를 한성대로 설정
                     LatLng curLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLocation,15));
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLocation, zoomLevel));
                     startMarker();
                 } else
                     Toast.makeText(getApplicationContext(), getString(R.string.no_location_detected), Toast.LENGTH_SHORT).show();
@@ -120,12 +126,21 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 return true;
             case R.id.distance1:
                 item.setChecked(true);
+                distanceSelect = 1000;
+                zoomLevel = 14;
+                getLastLocation();
                 return true;
             case R.id.distance2:
                 item.setChecked(true);
+                distanceSelect = 2000;
+                zoomLevel = 13.3f;
+                getLastLocation();
                 return true;
             case R.id.distance3:
                 item.setChecked(true);
+                distanceSelect = 3000;
+                zoomLevel = 12.6f;
+                getLastLocation();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -149,29 +164,46 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void addMarker(String name, String address){
-         try{
-            Geocoder geocoder = new Geocoder(this, Locale.KOREAN);
-            List<Address> addresses = geocoder.getFromLocationName(address, 1);
-            LatLng location = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
-            mGoogleMap.addMarker(
-                    new MarkerOptions().
-                            position(location).
-                            title(name.toString()).
-                            alpha(0.8f).
-                            icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant_locator_for_map))
-            );
-        } catch (IOException e){
-            Log.e(getClass().toString(), "Failed in using Geocoder.", e);
-            return;
-        }
+        Location location = getLocationFromAddress(address);
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        mGoogleMap.addMarker(
+                new MarkerOptions().position(latLng).title(name).
+                        icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant_locator_for_map))
+        );
     }
 
-    private void startMarker(){
+    private void startMarker() {
+        mGoogleMap.clear();
         Cursor cursor = mDbHelper.getAllRestaurantsByMethod();
+        int distance;
         while (cursor.moveToNext()) {
             String name = cursor.getString(1);
             String address = cursor.getString(2);
-            addMarker(name, address);
+            distance = getDistance(mLastLocation, address);
+            if (distance < distanceSelect)
+                addMarker(name, address);
+            Log.i("거리", distanceSelect + "이내, " + name + ", 거리=" + distance);
         }
+    }
+
+    private int getDistance(Location startLocation, String endAddress) {
+        // http://developer88.tistory.com/70
+        Location endLocation = getLocationFromAddress(endAddress);
+        int distance;
+        distance = (int) startLocation.distanceTo(endLocation);
+        return distance;
+    }
+
+    private Location getLocationFromAddress(String address) {
+        Location location = new Location("location");
+        try{
+            Geocoder geocoder = new Geocoder(this, Locale.KOREAN);
+            List<Address> addresses = geocoder.getFromLocationName(address, 1);
+            location.setLatitude(addresses.get(0).getLatitude());
+            location.setLongitude(addresses.get(0).getLongitude());
+        } catch (IOException e){
+            Log.e(getClass().toString(), "Failed in using Geocoder.", e);
+        }
+        return location;
     }
 }
