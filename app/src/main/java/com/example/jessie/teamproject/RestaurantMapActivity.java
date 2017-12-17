@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+//커밋 테스트용 커밋입니다.
 public class RestaurantMapActivity extends AppCompatActivity implements OnMapReadyCallback{
     private final int REQUEST_PERMISSIONS_FOR_LAST_KNOWN_LOCATION = 100;
     private FusedLocationProviderClient mFusedLocationClient;
