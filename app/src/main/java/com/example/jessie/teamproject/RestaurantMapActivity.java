@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -56,6 +59,15 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Button searchbtn = (Button) findViewById(R.id.button);
+
+        searchbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAddress();
+            }
+        });
 
 //        insertRestaurant("밥퍼스", "대한민국 서울특별시 성북구 삼선동2가 330-12", "02-762-4437", "10:00~22:00", null);
 //        insertRestaurant("할매순대국한성대역점", "대한민국 서울특별시 성북구 삼선동1가 13-4", "02-742-2655", "00:00~23:59", null);
@@ -205,5 +217,61 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
             Log.e(getClass().toString(), "Failed in using Geocoder.", e);
         }
         return location;
+    }
+
+    private void getAddress() {
+        TextView addressTextView = (TextView) findViewById(R.id.resultText);
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.KOREA);
+            Cursor cursor = mDbHelper.getAllRestaurantsByMethod();
+            EditText place = (EditText) findViewById(R.id.editText);
+            TextView result = (TextView) findViewById(R.id.resultText);
+
+            while (cursor.moveToNext()) {
+                if(place.getText().toString().equals(cursor.getString(1))){
+                    List<Address> addresses = geocoder.getFromLocationName(cursor.getString(2), 1);
+                    result.setText(place.getText());
+
+                    LatLng location = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+
+                    mLastLocation.setLatitude(addresses.get(0).getLatitude());mLastLocation.setLongitude(addresses.get(0).getLongitude());//현재 위치를 검색한 위치로 설정
+
+                    startMarker();
+
+                    mGoogleMap.addMarker(
+                            new MarkerOptions().
+                                    position(location).
+                                    title(place.getText().toString())
+                    );
+                    return;
+                }
+            }
+            List<Address> addresses = geocoder.getFromLocationName(place.getText().toString(), 1);
+            if (addresses.size() > 0) {
+                Address bestResult = (Address) addresses.get(0);
+
+                result.setText(String.format("[%s, %s]",
+                        bestResult.getLatitude(),
+                        bestResult.getLongitude()));
+            }
+
+            LatLng location = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+            mLastLocation.setLatitude(addresses.get(0).getLatitude());mLastLocation.setLongitude(addresses.get(0).getLongitude());//현재 위치를 검색한 위치로 설정
+
+            startMarker();
+
+            mGoogleMap.addMarker(
+                    new MarkerOptions().
+                            position(location).
+                            title(place.getText().toString())
+            );
+        } catch (IOException e) {
+            Log.e(getClass().toString(), "Failed in using Geocoder", e);
+            return;
+        }
     }
 }
