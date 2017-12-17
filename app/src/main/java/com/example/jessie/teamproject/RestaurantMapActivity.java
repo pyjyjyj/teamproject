@@ -1,6 +1,8 @@
 package com.example.jessie.teamproject;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -9,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -162,6 +166,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        mGoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
     }
 
     private DBHelper mDbHelper;
@@ -291,6 +296,49 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
         } catch (IOException e) {
             Log.e(getClass().toString(), "Failed in using Geocoder", e);
             return;
+        }
+    }
+
+    class MyMarkerClickListener implements GoogleMap.OnMarkerClickListener {
+        Intent intent;
+        @Override
+        public boolean onMarkerClick(final Marker marker) {
+            Cursor cursor = mDbHelper.getAllRestaurantsByMethod();
+            boolean isExist = false;
+            final Context context = RestaurantMapActivity.this;
+            while(cursor.moveToNext()) {
+                if (marker.getTitle().equals(cursor.getString(1))) {
+                    intent = new Intent(context, RestarurantDetailActivity.class);
+                    intent.putExtra("resName", marker.getTitle());
+                    startActivity(intent);
+                    isExist = true;
+                    break;
+                }
+            }
+            if(!isExist) {
+                //http://mainia.tistory.com/2017
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                dialogBuilder.setTitle("맛집 등록").setMessage("새로운 맛집으로 등록하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("예",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int i) {
+                                        intent = new Intent(context, RestaurantInsertActivity.class);
+                                        intent.putExtra("mapAddress", marker.getTitle());
+                                        startActivity(intent);
+                                    }
+                                })
+                        .setNegativeButton("아니오",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int i) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.show();
+            }
+            return false;
         }
     }
 }

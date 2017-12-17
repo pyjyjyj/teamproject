@@ -36,6 +36,8 @@ public class RestaurantInsertActivity extends AppCompatActivity {
         checkDangerousPermissions();
 
         mDbHelper = new DBHelper(this);
+        EditText address = (EditText) findViewById(R.id.rAddress);
+        address.setText(getIntent().getStringExtra("mapAddress"));
 
         imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener(){
