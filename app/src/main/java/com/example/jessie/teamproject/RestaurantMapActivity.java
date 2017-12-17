@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-//커밋 테스트용 커밋입니다.
 public class RestaurantMapActivity extends AppCompatActivity implements OnMapReadyCallback{
     private final int REQUEST_PERMISSIONS_FOR_LAST_KNOWN_LOCATION = 100;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -221,7 +220,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void getAddress() {
-        TextView addressTextView = (TextView) findViewById(R.id.resultText);
+        Location searchLocation = new Location("searchLocation");
         try {
             Geocoder geocoder = new Geocoder(this, Locale.KOREA);
             Cursor cursor = mDbHelper.getAllRestaurantsByMethod();
@@ -232,14 +231,22 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 if(place.getText().toString().equals(cursor.getString(1))){
                     List<Address> addresses = geocoder.getFromLocationName(cursor.getString(2), 1);
                     result.setText(place.getText());
-
                     LatLng location = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel));
+                    searchLocation.setLatitude(addresses.get(0).getLatitude()); searchLocation.setLongitude(addresses.get(0).getLongitude());
 
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-
-                    mLastLocation.setLatitude(addresses.get(0).getLatitude());mLastLocation.setLongitude(addresses.get(0).getLongitude());//현재 위치를 검색한 위치로 설정
-
-                    startMarker();
+                    mGoogleMap.clear();
+                    Cursor c = mDbHelper.getAllRestaurantsByMethod();
+                    int distance;
+                    while (c.moveToNext()) {
+                        String name = c.getString(1);
+                        String address = c.getString(2);
+                        if(name.equals(place.getText().toString()))
+                            continue;
+                        distance = getDistance(searchLocation, address);
+                        if (distance < distanceSelect)
+                            addMarker(name, address);
+                    }
 
                     mGoogleMap.addMarker(
                             new MarkerOptions().
@@ -260,10 +267,21 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
 
             LatLng location = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
 
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-            mLastLocation.setLatitude(addresses.get(0).getLatitude());mLastLocation.setLongitude(addresses.get(0).getLongitude());//현재 위치를 검색한 위치로 설정
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel));
+            searchLocation.setLatitude(addresses.get(0).getLatitude()); searchLocation.setLongitude(addresses.get(0).getLongitude());
 
-            startMarker();
+            mGoogleMap.clear();
+            Cursor c = mDbHelper.getAllRestaurantsByMethod();
+            int distance;
+            while (c.moveToNext()) {
+                String name = c.getString(1);
+                String address = c.getString(2);
+                if(name.equals(place.getText().toString()))
+                    continue;
+                distance = getDistance(searchLocation, address);
+                if (distance < distanceSelect)
+                    addMarker(name, address);
+            }
 
             mGoogleMap.addMarker(
                     new MarkerOptions().
