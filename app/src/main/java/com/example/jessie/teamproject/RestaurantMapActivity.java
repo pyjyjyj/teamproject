@@ -118,7 +118,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
                     mLastLocation = location;
-                    mLastLocation.setLatitude(37.581759);mLastLocation.setLongitude(127.010369);//현재 위치를 한성대로 설정
                     LatLng curLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLocation, zoomLevel));
                     startMarker();
