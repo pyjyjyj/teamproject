@@ -46,6 +46,7 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     private GoogleMap mGoogleMap = null;
     private int distanceSelect = 1000;
     private float zoomLevel = 14;
+    private DBHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +74,10 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
             }
         });
 
-//        insertRestaurant("밥퍼스", "대한민국 서울특별시 성북구 삼선동2가 330-12", "02-762-4437", "10:00~22:00", null);
-//        insertRestaurant("할매순대국한성대역점", "대한민국 서울특별시 성북구 삼선동1가 13-4", "02-742-2655", "00:00~23:59", null);
-//        insertRestaurant("박효신꼬지비어", "대한민국 서울특별시 성북구 삼선동2가 44-1", "02-742-4226", "18:00~04:00", null);
-//        insertRestaurant("안즈나 선아 당신 생각", "대한민국 서울특별시 성북구 동소문동1가 111-2", "02-6465-3945", "10:00~23:00",null);
+//        mDbHelper.insertRestaurantByMethod("밥퍼스", "대한민국 서울특별시 성북구 삼선동2가 330-12", "02-762-4437", "10:00~22:00", null);
+//        mDbHelper.insertRestaurantByMethod("할매순대국한성대역점", "대한민국 서울특별시 성북구 삼선동1가 13-4", "02-742-2655", "00:00~23:59", null);
+//        mDbHelper.insertRestaurantByMethod("박효신꼬지비어", "대한민국 서울특별시 성북구 삼선동2가 44-1", "02-742-4226", "18:00~04:00", null);
+//        mDbHelper.insertRestaurantByMethod("안즈나 선아 당신 생각", "대한민국 서울특별시 성북구 동소문동1가 111-2", "02-6465-3945", "10:00~23:00",null);
 //        mDbHelper.insertRestaurantByMethod("소문난국수집", "서울특별시 성북구 성북동 58-26", "02-3672-6685", "10:00~22:00", null);
 //        mDbHelper.insertRestaurantByMethod("왕코등갈비", "서울특별시 종로구 종로1.2.3.4가동 돈화문로 49", "02-766-4492", "17:00~23:30", null);
 //        mDbHelper.insertRestaurantByMethod("삼숙이라면", "서울특별시 종로구 인사동 220-2", "02-720-9711", "08:30~21:30", null);
@@ -167,17 +168,6 @@ public class RestaurantMapActivity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         mGoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
-    }
-
-    private DBHelper mDbHelper;
-    private void insertRestaurant(String name, String address, String phone, String time, String imgFileName) {
-        long nOfRows = mDbHelper.insertRestaurantByMethod(name, address, phone, time, imgFileName);
-        Intent intent = new Intent(this, RestarurantDetailActivity.class);
-        intent.putExtra("resName", name);
-        if (nOfRows > 0)
-            Toast.makeText(this, nOfRows + " Record Inserted", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(this, "No Record Inserted", Toast.LENGTH_SHORT).show();
     }
 
     private void addMarker(String name, String address){
